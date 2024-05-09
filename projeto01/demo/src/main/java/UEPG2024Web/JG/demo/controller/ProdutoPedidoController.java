@@ -69,7 +69,7 @@ public class ProdutoPedidoController {
     public ResponseEntity<ProdutoPedido> createProdutoPedido(@RequestBody ProdutoPedido ar){
 
         try {
-            ProdutoPedido _a = rep.save(new ProdutoPedido(ar.getIdPedido(), ar.getIdProduto(), ar.getQuantidade(), ar.getPrecoUnitario(), ar.getDesconto()));
+            ProdutoPedido _a = rep.save(new ProdutoPedido(ar.getPedidos(), ar.getProdutos(), ar.getQuantidade(), ar.getPrecoUnitario(), ar.getDesconto()));
             return new ResponseEntity<>(_a, HttpStatus.CREATED);            
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

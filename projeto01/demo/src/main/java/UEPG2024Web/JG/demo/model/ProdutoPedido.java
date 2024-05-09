@@ -1,19 +1,25 @@
 package UEPG2024Web.JG.demo.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pedido_produto")
 public class ProdutoPedido {
     
+    
+    @OneToMany
     @Id
-    private final int idPedido;
+    private final List<Pedido> pedidos;
 
+    @OneToMany
     @Id
-    private final int idProduto;
+    private final List<Produto> produtos;
 
     @Column
     private int quantidade;
@@ -24,10 +30,10 @@ public class ProdutoPedido {
     @Column
     private float desconto;
 
-    public ProdutoPedido(int idPedido, int idProduto, int quantidade, float precoUnitario, float desconto){
+    public ProdutoPedido(List<Pedido> pedidos, List<Produto> produtos, int quantidade, float precoUnitario, float desconto){
 
-        this.idPedido = idPedido;
-        this.idProduto = idProduto;
+        this.pedidos = pedidos;
+        this.produtos = produtos;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
         this.desconto = desconto;
@@ -36,12 +42,12 @@ public class ProdutoPedido {
 
     // Gets e Sets
 
-    public int getIdPedido() {
-        return idPedido;
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
 
-    public int getIdProduto() {
-        return idProduto;
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 
     public int getQuantidade() {
