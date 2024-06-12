@@ -29,6 +29,8 @@ public class Pedido {
     @Column
     private Date dataRemessa;
 
+    public Pedido(){}
+    
     public Pedido(int idFuncionario, int idCliente, Date dataPedido, Date dataRemessa){
 
         this.idFuncionario = idFuncionario;

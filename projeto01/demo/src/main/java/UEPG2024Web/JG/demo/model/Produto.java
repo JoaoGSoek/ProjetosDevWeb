@@ -27,6 +27,8 @@ public class Produto {
     @Column
     private float valor_venda;
 
+    public Produto(){}
+
     public Produto(char codigo[], String descricao, float valor_custo, float valor_venda){
 
         this.codigo = codigo;
