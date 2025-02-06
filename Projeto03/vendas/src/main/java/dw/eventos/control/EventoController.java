@@ -1,6 +1,6 @@
 package dw.eventos.control;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,12 +79,29 @@ public class EventoController {
      * GET /api/eventos/at/:data : listar Evento dado uma data
      */
     @GetMapping("/eventos/at/{data}")
-    public ResponseEntity<List<Evento>> getEventoByDate(@PathVariable("data") Date data)
+    public ResponseEntity<List<Evento>> getEventoByDate(@PathVariable("data") LocalDate data)
     {
         try
         {
             List<Evento> la = new ArrayList<Evento>();
             rep.findByData(data).forEach(la::add);
+            if (la.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(la, HttpStatus.OK);
+        }
+         catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * GET /api/eventos/days/:ano/:mes : listar dias de um mês que possuem um evento
+     */
+    @GetMapping("/eventos/days/{ano}/{mes}")
+    public ResponseEntity<List<LocalDate>> getDaysWithEvents(@PathVariable int ano, @PathVariable int mes)
+    {
+        try
+        {
+            List<LocalDate> la = rep.getDaysWithEvents(mes, ano);
             if (la.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(la, HttpStatus.OK);
         }

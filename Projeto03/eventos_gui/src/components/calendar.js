@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import eventoDataService from '../services/eventoDataService';
 
 const Calendar = () => {
@@ -9,13 +9,14 @@ const Calendar = () => {
 
     const [date, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(date);
+    const [monthEvents, setMonthEvents] = useState([]);
 
     const getDay = (day) => new Date(date.getFullYear(), date.getMonth(), day);
 
     const numDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     const startingWeekDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay() + 1;
 
-    for(let i = 1; i <= numDays; i++) monthDays.push(<button onClick={() => setSelectedDate(getDay(i))} key={`day-${i}`} style={i === 1 ? {gridColumn: startingWeekDay} : {}} className={`${getDay(i).setHours(0, 0, 0, 0) === (new Date()).setHours(0, 0, 0, 0) ? 'today' : ''} ${getDay(i).setHours(0, 0, 0, 0) === selectedDate.setHours(0, 0, 0, 0) ? 'selected' : ''}`}>{i}</button>);
+    for(let i = 1; i <= numDays; i++) monthDays.push(<button onClick={() => setSelectedDate(getDay(i))} key={`day-${i}`} style={i === 1 ? {gridColumn: startingWeekDay} : {}} className={`${getDay(i).setHours(0, 0, 0, 0) === (new Date()).setHours(0, 0, 0, 0) ? 'today' : ''} ${getDay(i).setHours(0, 0, 0, 0) === selectedDate.setHours(0, 0, 0, 0) ? 'selected' : ''} ${monthEvents.find(d => {if(d == i) return true;}) && 'hasEvent'}`}>{i}</button>);
 
     const prevMonth = () => setDate(new Date(date.getFullYear(), date.getMonth() - 1));
     const nextMonth = () => setDate(new Date(date.getFullYear(), date.getMonth() + 1));
@@ -27,19 +28,38 @@ const Calendar = () => {
     const [newEventDescription, setNewEventDescription] = useState('');
     const [events, setEvents] = useState([]);
 
+	const getEventsFromSelectedMonth = () => eventoDataService.getAllFromMonth(date).then(response => {
+        
+		const retrievedDates = [];
+		for(var date of response.data) retrievedDates.push(parseInt(date.substring(8)));
+        setMonthEvents(retrievedDates);
+    
+    }).catch(() => {
+
+        alert('Erro ao buscar eventos do mês.');
+
+    });
+	
+	useEffect(() => {
+
+		if(date) getEventsFromSelectedMonth();
+
+	}, [date]);
+
     const getEventAtSelectedDate = () => eventoDataService.getAllAt(selectedDate).then(response => {
             
         setEvents(response.data);
     
     }).catch(() => {
 
-        alert('Erro ao buscar eventos.');
+        alert('Erro ao buscar eventos do dia.');
 
     });
 
     useEffect(() => {
 
-        getEventAtSelectedDate();
+        if(selectedDate) getEventAtSelectedDate();
+		if(date) getEventsFromSelectedMonth();
 
     }, [selectedDate, showForm])
 
@@ -57,6 +77,7 @@ const Calendar = () => {
                 
                 alert("Evento deletado com sucesso.");
                 getEventAtSelectedDate();
+				getEventsFromSelectedMonth();
             
             }).catch(() => {
 

@@ -117,6 +117,21 @@ main#calendar section#days button.selected{
     background-color: var(--warning-color);
 }
 
+main#calendar section#days button.hasEvent {
+    position: relative;
+}
+
+main#calendar section#days button.hasEvent:before {
+    content: '';
+    width: 8px;
+    aspect-ratio: 1;
+    position: absolute;
+    border-radius: 50%;
+    top: 4px;
+    right: 5px;
+    background-color: var(--warning-color);
+}
+
 main#calendar section#eventList{
     grid-area: list;
     background-color: var(--dark-bg-color);
@@ -148,7 +163,7 @@ section#eventList article header {
 }
 
 section#eventList article header h5 {
-    flex: 1 0 auto;
+    flex: 1 1 auto;
 }
 
 section#eventList article header button.success{

@@ -1,6 +1,6 @@
 package dw.eventos.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,11 +24,11 @@ public class Evento {
     private String descricao;
 
     @Column
-    private Date data;
+    private LocalDate data;
 
     public Evento() {}
 
-	public Evento(String titulo, String descricao, Date data) {
+	public Evento(String titulo, String descricao, LocalDate data) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.data = data;
@@ -58,11 +58,11 @@ public class Evento {
         this.descricao = descricao;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 

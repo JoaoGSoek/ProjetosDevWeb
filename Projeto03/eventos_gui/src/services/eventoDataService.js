@@ -11,6 +11,10 @@ class EventoDataService {
         return http.get(`/eventos/at/${date.getFullYear()}-${zeroPad(date.getMonth() + 1, 2)}-${zeroPad(date.getDate(), 2)}`);
     }
 
+    getAllFromMonth(date) {
+        return http.get(`/eventos/days/${date.getFullYear()}/${date.getMonth() + 1}`);
+    }
+
     get(id){
         return http.get(`/eventos/${id}`);
     }
